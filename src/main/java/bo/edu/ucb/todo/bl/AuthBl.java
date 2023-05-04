@@ -11,7 +11,6 @@ import bo.edu.ucb.todo.dto.LoginDto;
 import bo.edu.ucb.todo.dto.TokenDto;
 
 public class AuthBl {
-
     public static final String KEY = "TigreCampeon2023";
 
     public TokenDto login(LoginDto login) {
@@ -24,10 +23,9 @@ public class AuthBl {
         } else {
             return null;
         }
-
     }
 
-    private String  generateToken(Integer userId, String name, String type, int minutes) {
+    private String generateToken(Integer userId, String name, String type, int minutes) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(KEY);
             String token = JWT.create()
@@ -59,8 +57,8 @@ public class AuthBl {
             decodedJWT = verifier.verify(token);
             return true;
         } catch (JWTVerificationException exception){
-            System.err.print("Token invalido: " + exception.getMessage());
+            System.err.print("Token inválido: " + exception.getMessage());
             return false;
-        } 
+        }
     }
 }

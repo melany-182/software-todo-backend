@@ -1,4 +1,4 @@
-### Este endpoint deberia retornar dos tokens.
+### este endpoint debería retornar dos tokens
 POST http://localhost:9999/api/v1/auth/login
 Content-Type: application/json
 
@@ -7,7 +7,7 @@ Content-Type: application/json
   "password": "admin"
 }
 
-### Este endpoint deberia retornar dos tokens.
+### este endpoint debería retornar dos tokens
 POST http://localhost:9999/api/v1/auth/login
 Content-Type: application/json
 
@@ -16,7 +16,7 @@ Content-Type: application/json
   "password": "12345678"
 }
 
-### Enpoint para refrescar el token
+### endpoint para refrescar el token
 POST http://localhost:9999/api/v1/auth/refresh
 Content-Type: application/json
 

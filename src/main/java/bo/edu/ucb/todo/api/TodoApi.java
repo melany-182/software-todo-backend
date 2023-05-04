@@ -1,13 +1,13 @@
 package bo.edu.ucb.todo.api;
-import java.util.*;
 
+import java.util.*;
 import org.springframework.web.bind.annotation.*;
 import bo.edu.ucb.todo.dto.*;
 import bo.edu.ucb.todo.bl.*;
+
 @RestController
 @CrossOrigin(origins = "*")
 class TodoApi {
-
     private List<TaskDto> tasks = new ArrayList<>();
 
     /**
@@ -16,8 +16,7 @@ class TodoApi {
      * @return
      */
     @GetMapping("/api/v1/task")
-    public ResponseDto<List<TaskDto>> getAllTasks(
-        @RequestHeader("Authorization") String token) {
+    public ResponseDto<List<TaskDto>> getAllTasks(@RequestHeader("Authorization") String token) {
         AuthBl authBl = new AuthBl();
         if (!authBl.validateToken(token)) {
             ResponseDto<List<TaskDto>> response = new ResponseDto<>();
@@ -39,7 +38,7 @@ class TodoApi {
      * @return
      */
     @GetMapping("/api/v1/task/{idTask}")
-    public ResponseDto<TaskDto> getTaskById( @PathVariable("idTask") Integer id, @RequestHeader("Authorization") String token) {
+    public ResponseDto<TaskDto> getTaskById(@PathVariable("idTask") Integer id, @RequestHeader("Authorization") String token) {
         ResponseDto<TaskDto> response = new ResponseDto<>();
         AuthBl authBl = new AuthBl();
         if (!authBl.validateToken(token)) {
@@ -48,20 +47,20 @@ class TodoApi {
             response.setErrorMessage("Invalid token");
             return response;
         }
-        //Buscamos el elemento en la lista
+        // Buscamos el elemento en la lista
         TaskDto task = tasks.stream()
                 .filter(t -> t.getTaskId().equals(id))
                 .findFirst()
                 .orElse(null);
         // Si no existe retornamos un error
         if (task == null) {
-            //FIXME: Cambiar el codigo de error debe retornar 404
+            // FIXME: Cambiar el código de error, debe retornar 404
             response.setCode("0001");
             response.setResponse(null);
             response.setErrorMessage("Task not found");
             return response;
         } else {
-            // Si existe retornamos el elemento
+            // Si existe, retornamos el elemento
             response.setCode("0000");
             response.setResponse(task);
             return response;
@@ -69,14 +68,14 @@ class TodoApi {
     }
 
     /**
-     * Actualiza una tarea por id de tarea.
+     * Actualiza una tarea por id de tarea
      * @param idTask La llave primaria de la tarea
      * @param newTask Los nuevos datos para la tarea
      * @param token El token que se obtuvo en la autenticación
      * @return
      */
     @PutMapping("/api/v1/task/{idTask}")
-    public ResponseDto<TaskDto> updateTaskById( @PathVariable Integer idTask, @RequestBody TaskDto newTask, @RequestHeader("Authorization") String token) {
+    public ResponseDto<TaskDto> updateTaskById(@PathVariable Integer idTask, @RequestBody TaskDto newTask, @RequestHeader("Authorization") String token) {
         ResponseDto<TaskDto> response = new ResponseDto<>();
         AuthBl authBl = new AuthBl();
         if (!authBl.validateToken(token)) {
@@ -85,25 +84,26 @@ class TodoApi {
             response.setErrorMessage("Invalid token");
             return response;
         }
-        //Buscamos el elemento en la lista
+        // Buscamos el elemento en la lista
         TaskDto task = tasks.stream()
                 .filter(t -> t.getTaskId().equals(idTask))
                 .findFirst()
                 .orElse(null);
-        // Si no existe retornamos un error
+        // Si no existe, retornamos un error
         if (task == null) {
-            //FIXME: Cambiar el codigo de error debe retornar 404
+            // FIXME: Cambiar el código de error, debe retornar 404
             response.setCode("0001");
             response.setResponse(null);
             response.setErrorMessage("Task not found");
             return response;
         } else {
             // Actualizamos los atributos de task con los de newTask
-            
             task.setDescription(newTask.getDescription());
-            task.setDate(newTask.getDate());
-            task.setLabelIds(newTask.getLabelIds());
-            // Si existe retornamos el elemento
+            task.setDeadline(newTask.getDeadline());
+            task.setLabelId(newTask.getLabelId());
+            task.setState(newTask.getState());
+            
+            // Si existe, retornamos el elemento
             response.setCode("0000");
             response.setResponse(task);
             return response;
@@ -111,10 +111,10 @@ class TodoApi {
     }
 
     /**
-     * Este metodo permite crear una tarea.
-     * @param task Todos los datos de una tarea.
+     * Este método permite crear una tarea
+     * @param task Todos los datos de una tarea
      * @param token El token obtenido en la autenticación
-     * @return Retorna un mensaje: "Task createed" o error en su defecto.
+     * @return Retorna un mensaje: "Task created" o error en su defecto
      */
     @PostMapping("/api/v1/task")
     public ResponseDto<String> createTask(@RequestBody TaskDto task, @RequestHeader("Authorization") String token) {
@@ -126,14 +126,17 @@ class TodoApi {
             response.setErrorMessage("Invalid token");
             return response;
         }
-        // Obtenemos el ultimo elemento de la lista  y le sumamos 1 para obtener el id
-        // del nuevo elemento
+        // Obtenemos el último elemento de la lista  y le sumamos 1 para obtener el id del nuevo elemento
         if (tasks.size() > 0) {
             TaskDto lastTask = tasks.get(tasks.size() - 1);
             task.setTaskId(lastTask.getTaskId() + 1);
         } else {
             task.setTaskId(1);
         }
+
+        // Por defecto, el estado de la nueva tarea es "Pendiente"
+        task.setState("Pendiente");
+
         tasks.add(task);
         
         response.setCode("0000");

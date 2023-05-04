@@ -1,10 +1,7 @@
 package bo.edu.ucb.todo.bl;
 
 import bo.edu.ucb.todo.dto.LabelDto;
-import bo.edu.ucb.todo.dto.ResponseDto;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +21,7 @@ public class LabelBl {
     }
 
     public LabelDto getLabelById(Integer id) {
-
-        //Buscamos el elemento en la lista
+        // Buscamos el elemento en la lista
         LabelDto label = labels.stream()
                 .filter(t -> t.getLabelId().equals(id))
                 .findFirst()
@@ -33,8 +29,19 @@ public class LabelBl {
         return label;
     }
 
+    public void createLabel(LabelDto label) {
+        // Obtenemos el último elemento de la lista  y le sumamos 1 para obtener el id del nuevo elemento
+        if (labels.size() > 0) {
+            LabelDto lastLabel = labels.get(labels.size() - 1);
+            label.setLabelId(lastLabel.getLabelId() + 1);
+        } else {
+            label.setLabelId(1);
+        }
+        labels.add(label);
+    }
+
     public LabelDto updateLabelById(Integer idLabel,  LabelDto newLabel) {
-        //Buscamos el elemento en la lista
+        // Buscamos el elemento en la lista
         LabelDto label = labels.stream()
                 .filter(t -> t.getLabelId().equals(idLabel))
                 .findFirst()
@@ -43,15 +50,12 @@ public class LabelBl {
         return label;
     }
 
-    public void createLabel(LabelDto label) {
-        // Obtenemos el ultimo elemento de la lista  y le sumamos 1 para obtener el id
-        // del nuevo elemento
-        if (labels.size() > 0) {
-            LabelDto lastLabel = labels.get(labels.size() - 1);
-            label.setLabelId(lastLabel.getLabelId() + 1);
-        } else {
-            label.setLabelId(1);
-        }
-        labels.add(label);
+    public void deleteLabelById(Integer idLabel) {
+        // Buscamos el elemento en la lista
+        LabelDto label = labels.stream()
+                .filter(t -> t.getLabelId().equals(idLabel))
+                .findFirst()
+                .orElse(null);
+        labels.remove(label);
     }
 }

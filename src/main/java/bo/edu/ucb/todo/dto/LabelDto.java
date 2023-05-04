@@ -1,11 +1,10 @@
 package bo.edu.ucb.todo.dto;
 
-public  class LabelDto {
+public class LabelDto {
     private Integer labelId;
     private String name;
 
-    public LabelDto() {
-    }
+    public LabelDto() {}
 
     public LabelDto(Integer labelId, String name) {
         this.labelId = labelId;
@@ -35,5 +34,4 @@ public  class LabelDto {
             ", name='" + getName() + "'" +
             "}";
     }
-
 }

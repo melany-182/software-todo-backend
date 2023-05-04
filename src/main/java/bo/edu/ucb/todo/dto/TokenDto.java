@@ -4,10 +4,7 @@ public class TokenDto {
     private String authToken;
     private String refreshToken;
 
-
-    public TokenDto() {
-    }
-    
+    public TokenDto() {}
 
     public String getAuthToken() {
         return this.authToken;
@@ -25,7 +22,6 @@ public class TokenDto {
         this.refreshToken = refreshToken;
     }
 
-
     @Override
     public String toString() {
         return "{" +
@@ -33,6 +29,4 @@ public class TokenDto {
             ", refreshToken='" + getRefreshToken() + "'" +
             "}";
     }
-
-
 }

@@ -1,14 +1,11 @@
 package bo.edu.ucb.todo.dto;
 
-public  class ResponseDto<T> {
-
+public class ResponseDto<T> {
     private String code;
     private T response;
     private String errorMessage;
 
-    public ResponseDto() {
-    }
-
+    public ResponseDto() {}
 
     public String getCode() {
         return this.code;
@@ -34,7 +31,6 @@ public  class ResponseDto<T> {
         this.errorMessage = errorMessage;
     }
 
-
     @Override
     public String toString() {
         return "{" +
@@ -43,7 +39,4 @@ public  class ResponseDto<T> {
             ", errorMessage='" + getErrorMessage() + "'" +
             "}";
     }
-
 }
-
-

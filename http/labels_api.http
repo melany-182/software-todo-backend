@@ -16,7 +16,6 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3d3cudWNiL
   "date": "2019-01-01T00:00:00Z"
 }
 
-
 ###
 PUT http://localhost:9999/api/v1/label/4
 Content-Type: application/json

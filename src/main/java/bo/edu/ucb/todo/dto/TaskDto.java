@@ -1,16 +1,13 @@
 package bo.edu.ucb.todo.dto;
 
-import java.util.*;
-
 public class TaskDto {
     private Integer taskId;
     private String description;
-    private Date date;
-    private List<Integer> labelIds;
+    private String deadline;
+    private int labelId;
+    private String state;
 
-    public TaskDto() {
-    }
-
+    public TaskDto() {}
 
     public Integer getTaskId() {
         return this.taskId;
@@ -28,32 +25,38 @@ public class TaskDto {
         this.description = description;
     }
 
-    public Date getDate() {
-        return this.date;
+    public String getDeadline() {
+        return this.deadline;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
     }
 
-    public List<Integer> getLabelIds() {
-        return this.labelIds;
+    public int getLabelId() {
+        return this.labelId;
     }
 
-    public void setLabelIds(List<Integer> labelIds) {
-        this.labelIds = labelIds;
+    public void setLabelId(int labelId) {
+        this.labelId = labelId;
     }
 
+    public String getState() {
+        return this.state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     @Override
     public String toString() {
         return "{" +
             " taskId='" + getTaskId() + "'" +
             ", description='" + getDescription() + "'" +
-            ", date='" + getDate() + "'" +
-            ", labelIds='" + getLabelIds() + "'" +
+            ", deadline='" + getDeadline() + "'" +
+            ", labelId='" + getLabelId() + "'" +
+            ", state='" + getState() + "'" +
             "}";
     }
-
-
 }

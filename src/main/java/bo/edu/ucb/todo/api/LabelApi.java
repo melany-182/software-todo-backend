@@ -4,15 +4,12 @@ import bo.edu.ucb.todo.bl.AuthBl;
 import bo.edu.ucb.todo.bl.LabelBl;
 import bo.edu.ucb.todo.dto.LabelDto;
 import bo.edu.ucb.todo.dto.ResponseDto;
-
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
 public class LabelApi {
-
     private LabelBl labelBl;
 
     public LabelApi(LabelBl labelBl) {
@@ -91,11 +88,11 @@ public class LabelApi {
             response.setErrorMessage("Invalid token");
             return response;
         }
-        //Buscamos el elemento en la lista
+        // Buscamos el elemento en la lista
         LabelDto label = this.labelBl.getLabelById(idLabel);
         // Si no existe retornamos un error
         if (label == null) {
-            //FIXME: Cambiar el codigo de error debe retornar 404
+            // FIXME: Cambiar el codigo de error debe retornar 404
             response.setCode("0001");
             response.setResponse(null);
             response.setErrorMessage("Label not found");
@@ -129,5 +126,38 @@ public class LabelApi {
         response.setCode("0000");
         response.setResponse("Label created");
         return response;
+    }
+
+    /**
+     * Este endpoint permite eliminar una etiqueta por ID
+     * @param id La llave primaria de la etiqueta
+     * @param token El token de autenticación
+     * @return
+     */
+    @DeleteMapping("/api/v1/label/{idLabel}")
+    public ResponseDto<String> deleteLabelById(@PathVariable("idLabel") Integer id, @RequestHeader("Authorization") String token) {
+        ResponseDto<String> response = new ResponseDto<>();
+        AuthBl authBl = new AuthBl();
+        if (!authBl.validateToken(token)) {
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid token");
+            return response;
+        }
+        // Buscamos el elemento en la lista
+        LabelDto label = this.labelBl.getLabelById(id);
+        // Si no existe retornamos un error
+        if (label == null) {
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Label not found");
+            return response;
+        } else {
+            // Si existe retornamos el elemento
+            this.labelBl.deleteLabelById(id);
+            response.setCode("0000");
+            response.setResponse("Label deleted");
+            return response;
+        }
     }
 }
